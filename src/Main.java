@@ -8,9 +8,14 @@ public class Main {
         CopyOnWriteArrayList<Gun> guns = new CopyOnWriteArrayList<>();
         guns.add(new Gun(1));
         guns.add(new Gun(2));
+        System.out.print("Please, enter the length of a unit time interval: ");
         int time = getUnitOfTime();
         Shooter shooter = new Shooter(time, guns);
         Charger charger = new Charger(time, guns);
+        shooter.start();
+        charger.start();
+        System.out.println(11);
+
     }
     public static int getIntString() {
         int number = 0;

@@ -16,4 +16,8 @@ public class Gun {
         System.out.printf("The gun %d has fired\n", number);
         isCharging = false;
     }
+
+    public boolean checkIsCharging(){
+        return isCharging;
+    }
 }

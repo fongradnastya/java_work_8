@@ -12,6 +12,32 @@ public class Charger extends Thread{
 
     @Override
     public void run() {
-        super.run();
+        while (true){
+            Gun gun = getUnchargedGun();
+            if(gun == null){
+                System.out.println("Charger is waiting for a gun");
+                try {
+                    guns.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else{
+                gun.charge();
+                guns.notify();
+                try {
+                    Thread.sleep(chargingTime);
+                } catch (InterruptedException ignored) {}
+            }
+        }
+    }
+
+    private synchronized Gun getUnchargedGun(){
+        for(Gun gun: guns){
+            if (! gun.checkIsCharging()){
+                return gun;
+            }
+        }
+        return null;
     }
 }
