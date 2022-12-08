@@ -9,15 +9,18 @@ public class Gun {
 
     public void charge(){
         isCharging = true;
-        System.out.printf("The gun %d is charging\n", number);
     }
 
     public void shoot(){
-        System.out.printf("The gun %d has fired\n", number);
         isCharging = false;
     }
 
     public boolean checkIsCharging(){
         return isCharging;
+    }
+
+    @Override
+    public String toString() {
+        return "The gun number " + number;
     }
 }
