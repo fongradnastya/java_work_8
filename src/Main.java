@@ -3,16 +3,29 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Класс для запуска обороны крепости
+ */
 public class Main {
-    private final static Scanner scanner = new Scanner(System.in);
-
+    /**
+     * Экземпляр потока стреляющего из ружий
+     */
     private static Shooter shooter;
+
+    /**
+     * Экземпляр потока заряжающего ружья
+     */
     private static Charger charger;
 
+    /**
+     * Потокобезопасный список ружий
+     */
     private static CopyOnWriteArrayList<Gun> guns;
 
-    private final static PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-
+    /**
+     * Точка входа в приложение
+     * @param args аргуменнты коммандной строки
+     */
     public static void main(String[] args) {
         guns = new CopyOnWriteArrayList<>();
         guns.add(new Gun(1));
@@ -37,6 +50,10 @@ public class Main {
             }
         }
     }
+
+    /**
+     * Вывод в консоль списка доступных комманд
+     */
     public static void printMenu(){
         System.out.println("___________________COMMANDS______________________");
         System.out.println("Type 1 to restart shooting");
@@ -44,6 +61,9 @@ public class Main {
         System.out.println("_________________________________________________");
     }
 
+    /**
+     * Метод для запуска стрельбы в нескольких потоках
+     */
     public static void startNewShooting(){
         int time = getUnitOfTime();
         shooter = new Shooter(time, guns);
@@ -52,7 +72,12 @@ public class Main {
         charger.start();
     }
 
+    /**
+     * Считывание строки с целым числом
+     * @return считанное целое число
+     */
     public static int getIntString() {
+        Scanner scanner = new Scanner(System.in);
         int number = 0;
         while (number == 0)
         {
@@ -71,7 +96,13 @@ public class Main {
         }
         return number;
     }
+
+    /**
+     * Получение от пользователя длины единицы времени
+     * @return считанное значение в миллисекундых
+     */
     public static int getUnitOfTime(){
+        PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
         out.println("️⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐");
         System.out.println("New shooting");
         out.println("️⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐");

@@ -2,19 +2,39 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Поток, реализующий стрелка для обороны крепости
+ */
 public class Shooter extends Thread {
+    /**
+     * Время в милисукундах, затрачиваемое на один выстрел
+     */
     private final int shotTime;
 
+    /**
+     * Флаг, обозначающий, нужно ли остановить выполнение стрельбы
+     */
     private boolean isStopped;
 
+    /**
+     * Разделяемый ресурс, содержащий все доступные ружья
+     */
     private final CopyOnWriteArrayList<Gun> guns;
 
+    /**
+     * Конструктор стрелка
+     * @param time размер единицы времени в милисекундах
+     * @param guns список всех доступных ружий
+     */
     Shooter(int time, CopyOnWriteArrayList<Gun> guns){
         shotTime = 5 * time;
         this.guns = guns;
         this.isStopped = false;
     }
 
+    /**
+     * Метод для запуска исполнения потока
+     */
     @Override
     public void run() {
         PrintStream out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
@@ -51,6 +71,10 @@ public class Shooter extends Thread {
         System.out.println("Shooter finished their work!");
     }
 
+    /**
+     * Получение первого доступного для стрельбы ружья
+     * @return заряженное ружьё, либо null
+     */
     private synchronized Gun getAvailableGun(){
         for(Gun gun: guns){
             if (gun.checkIsCharging()){
@@ -60,12 +84,19 @@ public class Shooter extends Thread {
         return null;
     }
 
+    /**
+     * Получение времени ожидания прихода следующего врага
+     * @return время
+     */
     private int getEnemyWaitingTime(){
         int min_time = 100;
         int max_time = 10000;
         return (int) (Math.random() * max_time + min_time + 1) - min_time;
     }
 
+    /**
+     * Завершение работы стрелка
+     */
     public void disable(){
         isStopped = true;
     }
